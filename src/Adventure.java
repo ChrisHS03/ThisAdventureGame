@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Objects;
 
 public class Adventure {
     private Player player;
@@ -10,6 +11,7 @@ public class Adventure {
         player = new Player(playerName, map.getRoom("1.Dusty Foyer"));
         discoveredRooms = new HashSet<>();
         discoveredRooms.add(player.getCurrentRoom().getName()); // Starting room is discovered
+
     }
 
     public void move(String direction) {
@@ -93,7 +95,12 @@ public class Adventure {
     private void lookAround() {
         Room currentRoom = player.getCurrentRoom();
         System.out.println(currentRoom.getName() + ", " + currentRoom.getDespriction());
+        player.getCurrentRoom().printRoomItems();
     }
+    public Player getPlayer(){
+        return player;
+    }
+
 
     @Override
     public String toString() {

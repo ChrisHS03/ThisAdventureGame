@@ -77,6 +77,12 @@ public class Map {
         rooms.put("7.Creaking Attic", room7);
         rooms.put("8.Rotted Conservatory", room8);
         rooms.put("9.Ghostly Dining Room", room9);
+
+        Item ko = new Item("stor ko", "ko");
+        Item hest = new Item("lille hest", "hest");
+        room1.addRoomItem(ko);
+        room3.addRoomItem(hest);
+
     }
 
     public Room getRoom(String roomName) {

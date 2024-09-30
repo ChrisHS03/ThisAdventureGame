@@ -14,6 +14,8 @@ public class Userinterface {
 
         while (active) {
             String userInput = input.nextLine().toLowerCase();
+
+
             if (userInput.contains("go north") || userInput.equals("n")) {
                 System.out.println("going north");
                 adventure.move("north");
@@ -40,6 +42,12 @@ public class Userinterface {
             } else if (userInput.contains("exit")) {
                 System.out.println("Exiting");
                 active = false;
+            } else if (userInput.contains("take")){
+                adventure.getPlayer().takeItem(userInput);
+            } else if (userInput.contains("inventory")){
+                adventure.getPlayer().printPlayerItem();
+            } else if (userInput.contains("drop")){
+                adventure.getPlayer().dropItem(userInput);
             }
         }
         input.close();
