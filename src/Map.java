@@ -78,10 +78,10 @@ public class Map {
         rooms.put("8.Rotted Conservatory", room8);
         rooms.put("9.Ghostly Dining Room", room9);
 
-        Item ko = new Item("stor ko", "ko");
-        Item hest = new Item("lille hest", "hest");
-        room1.addRoomItem(ko);
-        room3.addRoomItem(hest);
+        room1.addRoomItem(new Item("old book", "book"));
+        room3.addRoomItem(new Item("rusty lamp", "lamp"));
+        room1.addRoomItem(new Food("dull bread", "bread", 30));
+        room2.addRoomItem(new Food("rotten apple", "apple", -30));
 
     }
 

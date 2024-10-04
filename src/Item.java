@@ -13,10 +13,4 @@ public class Item {
     public String getShortname(){
         return shortname;
     }
-    public void setLongname(String longname){
-        this.longname = longname;
-    }
-    public void setShortname(String shortname){
-        this.shortname = shortname;
-    }
 }

@@ -15,7 +15,6 @@ public class Userinterface {
         while (active) {
             String userInput = input.nextLine().toLowerCase();
 
-
             if (userInput.contains("go north") || userInput.equals("n")) {
                 System.out.println("going north");
                 adventure.move("north");
@@ -30,24 +29,28 @@ public class Userinterface {
                 adventure.move("west");
             } else if (userInput.contains("look")) {
                 System.out.println("looking around");
-                System.out.println(adventure);
+                adventure.lookAround();
             } else if (userInput.contains("help")) {
                 System.out.println("helping");
                 System.out.println("Commands:\nGo north, Go south, Go east, Go west, Look, Help, Exit\n");
                 System.out.println("Use Go north, Go south, Go east & Go west to move around" +
                         "\nUse Look to get some information about the room you are in\nUse Help to get some help" +
                         "\nUse Exit to exit the game");
-            } else if (userInput.contains("map")){
-                adventure.getMap();
             } else if (userInput.contains("exit")) {
                 System.out.println("Exiting");
                 active = false;
             } else if (userInput.contains("take")){
-                adventure.getPlayer().takeItem(userInput);
+                adventure.takeItem(userInput);
             } else if (userInput.contains("inventory")){
-                adventure.getPlayer().printPlayerItem();
+                adventure.printPlayerItem();
             } else if (userInput.contains("drop")){
-                adventure.getPlayer().dropItem(userInput);
+                adventure.dropItem(userInput);
+            } else if (userInput.contains("health")){
+                adventure.getHealth();
+            } else if (userInput.contains("eat")){
+                adventure.eat(userInput);
+            } else {
+                System.out.println("invalid command");
             }
         }
         input.close();

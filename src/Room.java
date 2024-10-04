@@ -40,7 +40,7 @@ public class Room {
     }
     public void printRoomItems(){
         for (Item i : roomItems){
-            System.out.println("Der er en " + i.getLongname());
+            System.out.println("item: " + i.getLongname());
         }
     }
 }
