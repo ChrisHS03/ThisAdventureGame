@@ -98,7 +98,7 @@ public class Player {
     public void equipWepon(String weponInput) {
         String[] inputParts = weponInput.split(" ");
         if (inputParts.length < 2) {
-            System.out.println("Please specify a valid food item.");
+            System.out.println("Please specify a valid wepon item.");
             return;
         }
 
