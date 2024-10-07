@@ -49,6 +49,10 @@ public class Userinterface {
                 adventure.getHealth();
             } else if (userInput.contains("eat")){
                 adventure.eat(userInput);
+            } else if (userInput.contains("equip")){
+                adventure.equipWepon(userInput);
+            } else if (userInput.contains("attack")){
+                adventure.attack();
             } else {
                 System.out.println("invalid command");
             }

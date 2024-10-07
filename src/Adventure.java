@@ -19,6 +19,13 @@ public class Adventure {
         getPlayer().eat(input);
     }
 
+    public void equipWepon(String input){
+        getPlayer().equipWepon(input);
+    }
+    public void attack(){
+        getPlayer().attack();
+    }
+
     public void takeItem(String inputItem){
         getPlayer().takeItem(inputItem);
     }

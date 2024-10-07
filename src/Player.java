@@ -5,11 +5,13 @@ public class Player {
     private int healthPoints;
     private Room currentRoom;
     private ArrayList<Item> playerItems = new ArrayList<Item>();
+    private Wepon equippedWeponItem;
 
     public Player(String name, Room startingRoom) {
         this.name = name;
         this.healthPoints = 100;
         this.currentRoom = startingRoom;
+        equippedWeponItem = null;
     }
 
     public String getName() {
@@ -93,97 +95,146 @@ public class Player {
         }
     }
 
-public void setCurrentRoom(Room room) {
-    this.currentRoom = room;
-}
+    public void equipWepon(String weponInput) {
+        String[] inputParts = weponInput.split(" ");
+        if (inputParts.length < 2) {
+            System.out.println("Please specify a valid food item.");
+            return;
+        }
 
-public void removePlayerItem(Item item) {
-    playerItems.remove(item);
-}
+        String wepon = inputParts[1];
+        boolean weponFound = false;
 
-public void addPlayerItem(Item item) {
-    playerItems.add(item);
-}
-
-public void move(String direction) {
-    Room currentRoom = getCurrentRoom();
-    Room nextRoom = null;
-
-    switch (direction) {
-        case "north":
-            nextRoom = currentRoom.getNorth();
-            break;
-        case "south":
-            nextRoom = currentRoom.getSouth();
-            break;
-        case "east":
-            nextRoom = currentRoom.getEast();
-            break;
-        case "west":
-            nextRoom = currentRoom.getWest();
-            break;
+        // Search for wepon in the player's inventory
+        for (Item item : playerItems) {
+            if (item instanceof Wepon && item.getLongname().contains(wepon)) {
+                System.out.println(item.getLongname() + " is equipped");
+                equippedWeponItem = (Wepon) item;
+                if (equippedWeponItem instanceof RangedWepon){
+                    System.out.println(equippedWeponItem.getRemainingUses() + " remaining uses");
+                }
+                weponFound = true;
+                break;
+            }
+        }
+        if (!weponFound) {
+            System.out.println("That wepon is not nearby.");
+            System.out.println("A wepon must be in your inventory before you can equip it.");
+        }
     }
 
-    if (nextRoom != null) {
-        setCurrentRoom(nextRoom);
-        lookAround();
-    } else {
-        System.out.println("You cannot go that way");
-    }
-}
-
-public void lookAround() {
-    Room currentRoom = getCurrentRoom();
-    System.out.println(currentRoom.getName() + ", " + currentRoom.getDespriction());
-    getCurrentRoom().printRoomItems();
-}
-
-public void takeItem(String inputItem) {
-    String item = inputItem.split(" ")[1];
-
-    for (int i = 0; i < getCurrentRoom().getRoomItems().size(); i++) {
-
-        if (getCurrentRoom().getRoomItems().get(i).getLongname().contains(item)) {
-            addPlayerItem(getCurrentRoom().getRoomItems().get(i));
-            System.out.println("The " + getCurrentRoom().getRoomItems().get(i).getLongname() + " is added to your inventory");
-            getCurrentRoom().removeRoomItem(getCurrentRoom().getRoomItems().get(i));
-
+    public void attack(){
+        if (equippedWeponItem==null){
+            System.out.println("you cant attack with no wepon equipped!");
         } else {
-            System.out.println("");
+            if (equippedWeponItem instanceof RangedWepon){
+                if (equippedWeponItem.getRemainingUses()==0){
+                    System.out.println("your wepon has no more ammo! find a new wepon");
+                } else {
+                    System.out.println("You attacked! dealing " + equippedWeponItem.getDamage() + " damage");
+                    equippedWeponItem.setRemainingUses(1);
+                    System.out.println(equippedWeponItem.getRemainingUses() + " remaining uses");
+                }
+            } else {
+                System.out.println("You attacked! dealing " + equippedWeponItem.getDamage() + " damage");
+            }
         }
     }
-}
 
-public void printPlayerItem() {
-    int counter = 0;
-    if (!playerItems.isEmpty())
-        for (Item i : playerItems) {
-            counter++;
-            System.out.println(counter + ". " + i.getLongname());
-        }
-    else {
-        System.out.println("You have no items");
+    public void setCurrentRoom(Room room) {
+        this.currentRoom = room;
     }
-}
 
-public ArrayList getPlayerItem() {
-    return playerItems;
-}
+    public void removePlayerItem(Item item) {
+        playerItems.remove(item);
+    }
 
-public void dropItem(String inputItem) {
-    String item = inputItem.split(" ")[1];
+    public void addPlayerItem(Item item) {
+        playerItems.add(item);
+    }
 
-    for (int i = 0; i < playerItems.size(); i++) {
+    public void move(String direction) {
+        Room currentRoom = getCurrentRoom();
+        Room nextRoom = null;
 
-        if (playerItems.get(i).getLongname().contains(item)) {
-            getCurrentRoom().addRoomItem(playerItems.get(i));
-            System.out.println(playerItems.get(i).getLongname() + " has been dropped");
-            removePlayerItem(playerItems.get(i));
+        switch (direction) {
+            case "north":
+                nextRoom = currentRoom.getNorth();
+                break;
+            case "south":
+                nextRoom = currentRoom.getSouth();
+                break;
+            case "east":
+                nextRoom = currentRoom.getEast();
+                break;
+            case "west":
+                nextRoom = currentRoom.getWest();
+                break;
+        }
+
+        if (nextRoom != null) {
+            setCurrentRoom(nextRoom);
+            lookAround();
         } else {
-            System.out.println("");
+            System.out.println("You cannot go that way");
         }
     }
-}
+
+    public void lookAround() {
+        Room currentRoom = getCurrentRoom();
+        System.out.println(currentRoom.getName() + ", " + currentRoom.getDespriction());
+        getCurrentRoom().printRoomItems();
+    }
+
+    public void takeItem(String inputItem) {
+        String item = inputItem.split(" ")[1];
+
+        for (int i = 0; i < getCurrentRoom().getRoomItems().size(); i++) {
+
+            if (getCurrentRoom().getRoomItems().get(i).getLongname().contains(item)) {
+                addPlayerItem(getCurrentRoom().getRoomItems().get(i));
+                System.out.println("The " + getCurrentRoom().getRoomItems().get(i).getLongname() + " is added to your inventory");
+                getCurrentRoom().removeRoomItem(getCurrentRoom().getRoomItems().get(i));
+
+            } else {
+                System.out.println("");
+            }
+        }
+    }
+
+    public void printPlayerItem() {
+        int counter = 0;
+        if (!playerItems.isEmpty())
+            for (Item i : playerItems) {
+                counter++;
+                System.out.println(counter + ". " + i.getLongname());
+            }
+        else {
+            System.out.println("You have no items");
+        }
+        if (equippedWeponItem!=null){
+            System.out.println("Eqquiped wepon: " + equippedWeponItem.getLongname());
+        }
+    }
+
+    public ArrayList getPlayerItem() {
+        return playerItems;
+    }
+
+    public void dropItem(String inputItem) {
+        String item = inputItem.split(" ")[1];
+
+        for (int i = 0; i < playerItems.size(); i++) {
+
+            if (playerItems.get(i).getLongname().contains(item)) {
+                getCurrentRoom().addRoomItem(playerItems.get(i));
+                System.out.println(playerItems.get(i).getLongname() + " has been dropped");
+                removePlayerItem(playerItems.get(i));
+            } else {
+                System.out.println("");
+            }
+        }
+    }
 
 
 }
