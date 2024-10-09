@@ -5,21 +5,30 @@ public class Player {
     private int healthPoints;
     private Room currentRoom;
     private ArrayList<Item> playerItems = new ArrayList<Item>();
-    private Wepon equippedWeponItem;
+    private Weapon equippedWeaponItem;
+    private boolean dead = false;
 
     public Player(String name, Room startingRoom) {
         this.name = name;
         this.healthPoints = 100;
         this.currentRoom = startingRoom;
-        equippedWeponItem = null;
+        equippedWeaponItem = null;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setHealthPoints(int input) {
-        healthPoints = input;
+    public boolean getDead(){
+        return dead;
+    }
+
+    public void takeDamage(int input) {
+        this.healthPoints = healthPoints - input;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
     }
 
     public Room getCurrentRoom() {
@@ -91,11 +100,14 @@ public class Player {
             // Negative food effect
             setHealthPoints(healthPoints + change);  // Handles both positive and negative changes
             System.out.println("That was disgusting!");
+            if (healthPoints<=0){
+                dead = true;
+            }
             getHealth();
         }
     }
 
-    public void equipWepon(String weponInput) {
+    public void equipWeapon(String weponInput) {
         String[] inputParts = weponInput.split(" ");
         if (inputParts.length < 2) {
             System.out.println("Please specify a valid wepon item.");
@@ -107,11 +119,11 @@ public class Player {
 
         // Search for wepon in the player's inventory
         for (Item item : playerItems) {
-            if (item instanceof Wepon && item.getLongname().contains(wepon)) {
+            if (item instanceof Weapon && item.getLongname().contains(wepon)) {
                 System.out.println(item.getLongname() + " is equipped");
-                equippedWeponItem = (Wepon) item;
-                if (equippedWeponItem instanceof RangedWepon){
-                    System.out.println(equippedWeponItem.getRemainingUses() + " remaining uses");
+                equippedWeaponItem = (Weapon) item;
+                if (equippedWeaponItem instanceof RangedWeapon){
+                    System.out.println(equippedWeaponItem.getRemainingUses() + " remaining uses");
                 }
                 weponFound = true;
                 break;
@@ -124,19 +136,43 @@ public class Player {
     }
 
     public void attack(){
-        if (equippedWeponItem==null){
-            System.out.println("you cant attack with no wepon equipped!");
+        if (equippedWeaponItem ==null){
+            System.out.println("you cant attack with no weapon equipped!");
         } else {
-            if (equippedWeponItem instanceof RangedWepon){
-                if (equippedWeponItem.getRemainingUses()==0){
+            if (equippedWeaponItem instanceof RangedWeapon){
+                if (equippedWeaponItem.getRemainingUses()==0){
                     System.out.println("your wepon has no more ammo! find a new wepon");
                 } else {
-                    System.out.println("You attacked! dealing " + equippedWeponItem.getDamage() + " damage");
-                    equippedWeponItem.setRemainingUses(1);
-                    System.out.println(equippedWeponItem.getRemainingUses() + " remaining uses");
+                    if (getCurrentRoom().getEnemies().isEmpty()){
+                        System.out.println("you are attacking thin air");
+                        equippedWeaponItem.setRemainingUses(1);
+                        System.out.println(equippedWeaponItem.getRemainingUses() + " remaining ammo");
+                    } else {
+                        getCurrentRoom().getEnemies().get(0).hit(equippedWeaponItem,getCurrentRoom());
+                        equippedWeaponItem.setRemainingUses(1);
+                        System.out.println(equippedWeaponItem.getRemainingUses() + " remaining ammo");
+                        if (getCurrentRoom().getEnemies().isEmpty()){
+
+                        } else {
+                            getCurrentRoom().getEnemies().get(0).attack(this);
+                        }
+                    }
                 }
             } else {
-                System.out.println("You attacked! dealing " + equippedWeponItem.getDamage() + " damage");
+                if (getCurrentRoom().getEnemies().isEmpty()){
+                    System.out.println("you are attacking thin air");
+                } else {
+                    getCurrentRoom().getEnemies().get(0).hit(equippedWeaponItem,getCurrentRoom());
+                    if (getCurrentRoom().getEnemies().isEmpty()){
+
+                    } else {
+                        getCurrentRoom().getEnemies().get(0).attack(this);
+                    }
+
+                }
+            }
+            if (healthPoints<=0){
+                dead =  true;
             }
         }
     }
@@ -184,9 +220,15 @@ public class Player {
         Room currentRoom = getCurrentRoom();
         System.out.println(currentRoom.getName() + ", " + currentRoom.getDespriction());
         getCurrentRoom().printRoomItems();
+        getCurrentRoom().printEnemies();
     }
 
     public void takeItem(String inputItem) {
+        String[] inputParts = inputItem.split(" ");
+        if (inputParts.length < 2) {
+            System.out.println("Please specify a valid item.");
+            return;
+        }
         String item = inputItem.split(" ")[1];
 
         for (int i = 0; i < getCurrentRoom().getRoomItems().size(); i++) {
@@ -212,13 +254,9 @@ public class Player {
         else {
             System.out.println("You have no items");
         }
-        if (equippedWeponItem!=null){
-            System.out.println("Eqquiped wepon: " + equippedWeponItem.getLongname());
+        if (equippedWeaponItem !=null){
+            System.out.println("Eqquiped wepon: " + equippedWeaponItem.getLongname());
         }
-    }
-
-    public ArrayList getPlayerItem() {
-        return playerItems;
     }
 
     public void dropItem(String inputItem) {

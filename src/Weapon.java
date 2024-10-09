@@ -1,8 +1,8 @@
-public class Wepon extends Item{
+public abstract class Weapon extends Item{
 
     private int damage;
 
-    public Wepon(String longname, String shortname, int damage){
+    public Weapon(String longname, String shortname, int damage){
         super(longname, shortname);
         this.damage = damage;
     }

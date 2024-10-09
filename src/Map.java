@@ -82,8 +82,12 @@ public class Map {
         room3.addRoomItem(new Item("rusty lamp", "lamp"));
         room1.addRoomItem(new Food("dull bread", "bread", 30));
         room2.addRoomItem(new Food("rotten apple", "apple", -30));
-        room1.addRoomItem(new MeleeWepon("short knife", "knife", 20));
-        room1.addRoomItem(new RangedWepon("handgun", "handgun", 40, 3));
+
+        room1.addRoomItem(new MeleeWeapon("short knife", "knife", 20));
+        room1.addRoomItem(new RangedWeapon("handgun", "handgun", 40, 3));
+
+        room6.addEnemy(new Enemy("old man", 100, new MeleeWeapon("big stick","stick",50)));
+
 
     }
 

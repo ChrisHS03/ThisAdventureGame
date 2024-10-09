@@ -3,13 +3,10 @@ import java.util.HashSet;
 public class Adventure {
     private Player player;
     private Map map;
-    private HashSet<String> discoveredRooms;
 
     public Adventure(String playerName) {
         map = new Map();
         player = new Player(playerName, map.getRoom("1.Dusty Foyer"));
-        discoveredRooms = new HashSet<>();
-        discoveredRooms.add(player.getCurrentRoom().getName()); // Starting room is discovered
     }
 
     public void getHealth(){
@@ -19,8 +16,8 @@ public class Adventure {
         getPlayer().eat(input);
     }
 
-    public void equipWepon(String input){
-        getPlayer().equipWepon(input);
+    public void equipWeapon(String input){
+        getPlayer().equipWeapon(input);
     }
     public void attack(){
         getPlayer().attack();

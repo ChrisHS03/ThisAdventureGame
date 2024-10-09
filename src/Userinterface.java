@@ -49,10 +49,18 @@ public class Userinterface {
                 adventure.getHealth();
             } else if (userInput.contains("eat")){
                 adventure.eat(userInput);
+                if (adventure.getPlayer().getDead()==true){
+                    System.out.println("YOU DIED!");
+                    active = false;
+                }
             } else if (userInput.contains("equip")){
-                adventure.equipWepon(userInput);
+                adventure.equipWeapon(userInput);
             } else if (userInput.contains("attack")){
                 adventure.attack();
+                if (adventure.getPlayer().getDead()==true){
+                    System.out.println("YOU DIED!");
+                    active = false;
+                }
             } else {
                 System.out.println("invalid command");
             }
