@@ -9,7 +9,7 @@ public class Userinterface {
         Adventure adventure = new Adventure(playerName);
         boolean active = true;
         System.out.println("Welcome, " + playerName + "!");
-        System.out.println("Commands:\nGo north, Go south, Go east, Go west, Look, Help, Exit\n");
+        System.out.println("Commands:\nGo north, Go south, Go east, Go west, Look, Help, Health, Eat, Take, Equip, Attack, Inventory, Drop, Exit\n");
         System.out.println("Play!");
 
         while (active) {
@@ -32,10 +32,7 @@ public class Userinterface {
                 adventure.lookAround();
             } else if (userInput.contains("help")) {
                 System.out.println("helping");
-                System.out.println("Commands:\nGo north, Go south, Go east, Go west, Look, Help, Exit\n");
-                System.out.println("Use Go north, Go south, Go east & Go west to move around" +
-                        "\nUse Look to get some information about the room you are in\nUse Help to get some help" +
-                        "\nUse Exit to exit the game");
+                System.out.println("Commands:\nGo north, Go south, Go east, Go west, Look, Help, Health, Eat, Take, Equip, Attack, Inventory, Drop, Exit\n");
             } else if (userInput.contains("exit")) {
                 System.out.println("Exiting");
                 active = false;

@@ -82,11 +82,19 @@ public class Map {
         room3.addRoomItem(new Item("rusty lamp", "lamp"));
         room1.addRoomItem(new Food("dull bread", "bread", 30));
         room2.addRoomItem(new Food("rotten apple", "apple", -30));
+        room7.addRoomItem(new Food("cheesecake", "cake", 80));
+        room7.addRoomItem(new Food("cup noodles", "noodles", 50));
+        room3.addRoomItem(new Food("cold pizza", "pizza", 70));
 
         room1.addRoomItem(new MeleeWeapon("short knife", "knife", 20));
         room1.addRoomItem(new RangedWeapon("handgun", "handgun", 40, 3));
 
-        room6.addEnemy(new Enemy("old man", 100, new MeleeWeapon("big stick","stick",50)));
+        room2.addEnemy(new Enemy("vampire", 100, new MeleeWeapon("big machete","machete",30)));
+        room4.addEnemy(new Enemy("zombie", 200, new MeleeWeapon("broken arm","arm",5)));
+        room6.addEnemy(new Enemy("evil jester", 40, new MeleeWeapon("long sword","sword",40)));
+        room8.addEnemy(new Enemy("ghost", 40, new MeleeWeapon("long spear","spear",50)));
+        room5.addEnemy(new Enemy("angry demon", 150, new RangedWeapon("magical staff ","staff",30,3)));
+
 
 
     }
